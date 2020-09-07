@@ -12,7 +12,7 @@ myImg3 = ImageTk.PhotoImage(Image.open("Photos/img3.jpg"))
 
 image_list = [myImg1, myImg2, myImg3]
 
-my_label = Label(image=myImg1)
+my_label = Label(image=myImg1, padx=15, pady=15)
 my_label.grid(row=0, column=0, columnspan=3)
 
 status = Label(win, text="Image 1 of " + str(len(image_list)), bd=1, relief=SUNKEN, anchor=E)
