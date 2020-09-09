@@ -6,9 +6,9 @@ win.title("Photo Viewer")
 
 win.iconbitmap('photoIcon.ico')
 
-myImg1 = ImageTk.PhotoImage(Image.open("Photos/img1.jpg"))
-myImg2 = ImageTk.PhotoImage(Image.open("Photos/img2.jpg"))
-myImg3 = ImageTk.PhotoImage(Image.open("Photos/img3.jpg"))
+myImg1 = ImageTk.PhotoImage(Image.open("../Photos/img1.jpg"))
+myImg2 = ImageTk.PhotoImage(Image.open("../Photos/img2.jpg"))
+myImg3 = ImageTk.PhotoImage(Image.open("../Photos/img3.jpg"))
 
 image_list = [myImg1, myImg2, myImg3]
 
