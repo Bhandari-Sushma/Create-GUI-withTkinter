@@ -12,12 +12,51 @@ conn = sqlite3.connect("address_book.db")
 cur = conn.cursor()
 
 
-# create a function to update a record
 def update():
+    # create a database (if already doesnot exist) or connect to the database (if already exist)
+    conn = sqlite3.connect("address_book.db")
+
+    # create cursor
+    cur = conn.cursor()
+
+    record_id = delete_box.get()
+    cur.execute(""" UPDATE addresses SET
+                first_name = :first,
+                last_name = :last, 
+                address = :address,
+                city = :city,
+                state = :state,
+                zip_code = :zip_code
+
+                WHERE oid = :oid""",
+                {
+                    'first': f_name_editor.get(),
+                    'last': l_name_editor.get(),
+                    'address': address_editor.get(),
+                    'city': city_editor.get(),
+                    'state': state_editor.get(),
+                    'zip_code': zip_code_editor.get(),
+
+                    'oid': record_id
+                }
+                )
+
+    # commit to changes
+    conn.commit()
+
+    # close the connection
+    conn.close()
+
+    editor.destroy()
+
+
+
+# create a function to update a record
+def edit():
+    global editor
     editor = Tk()
     editor.title("update a record")
-    editor.geometry("400x600")
-
+    editor.geometry("400x300")
 
     # create a database (if already doesnot exist) or connect to the database (if already exist)
     conn = sqlite3.connect("address_book.db")
@@ -31,7 +70,13 @@ def update():
     cur.execute("SELECT * FROM addresses WHERE oid = " + record_id)
     records = cur.fetchall()  # fecthone, fetchmany(num)
 
-
+    # Create global variables for text box name
+    global f_name_editor
+    global l_name_editor
+    global address_editor
+    global city_editor
+    global state_editor
+    global zip_code_editor
 
     f_name_editor = Entry(editor, width=30)
     f_name_editor.grid(row=0, column=1, padx=20, pady=(10, 0))
@@ -60,7 +105,7 @@ def update():
     zip_code_label = Label(editor, text="Zipcode")
     zip_code_label.grid(row=5, column=0)
 
-    query_btn = Button(editor, text="Save Record")
+    query_btn = Button(editor, text="Update Record", command=update)
     query_btn.grid(row=6, column=0, columnspan=2, pady=10, padx=10, ipadx=135)
 
     # loop through results
@@ -80,13 +125,6 @@ def update():
 
     # start the GUI
     editor.mainloop()
-
-
-
-
-
-
-
 
 
 # Create function to delete a record
@@ -211,16 +249,16 @@ submit_button = Button(win, text="Add record to database", command=submit)
 submit_button.grid(row=6, column=0, columnspan=2, pady=10, padx=10, ipadx=102)
 
 # Create a query button
-query_btn = Button(win, text="Show Recods", command=query)
+query_btn = Button(win, text="Show Records", command=query)
 query_btn.grid(row=7, column=0, columnspan=2, pady=10, padx=10, ipadx=135)
 
 # Create a delete button
-query_btn = Button(win, text="Delete Recod", command=delete)
+query_btn = Button(win, text="Delete Record", command=delete)
 query_btn.grid(row=11, column=0, columnspan=2, pady=10, padx=10, ipadx=135)
 
 # Create a update button
-query_btn = Button(win, text="Update Recod", command=update)
-query_btn.grid(row=12, column=0, columnspan=2, pady=10, padx=10, ipadx=135)
+query_btn = Button(win, text="Edit and Update Record", command=edit)
+query_btn.grid(row=12, column=0, columnspan=2, pady=10, padx=10, ipadx=105)
 
 # commit to changes
 conn.commit()
