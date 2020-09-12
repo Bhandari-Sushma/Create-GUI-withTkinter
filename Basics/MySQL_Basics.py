@@ -58,6 +58,7 @@ my_cursor.execute("""ALTER TABLE customers ADD(
 
 # Show table content
 my_cursor.execute("SELECT * from customers")
+# results = my_cursor.description()
 results = my_cursor.fetchall()
 for items in results:
     print(items)
