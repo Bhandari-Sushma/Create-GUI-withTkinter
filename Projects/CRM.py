@@ -29,7 +29,6 @@ def clear_fields():
     country_box.delete(0, END)
     phone_box.delete(0, END)
     email_box.delete(0, END)
-    username_box.delete(0, END)
     payment_method_box.delete(0, END)
     discount_code_box.delete(0, END)
     price_paid_box.delete(0, END)
@@ -37,7 +36,17 @@ def clear_fields():
 
 # Function to add customers to the database
 def add_customers():
-    return
+    sql_command = "INSERT INTO customers (first_name, last_name, zip_code, price_paid, email, address_1, address_2, city, state, country, phone_no, payment_method, discount_code) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    values = (first_name_box.get(), last_name_box.get(), zip_code_box.get(), price_paid_box.get(), email_box.get(), address1_box.get(), address2_box.get(), city_box.get(),
+              state_box.get(), country_box.get(), phone_box.get(), payment_method_box.get(), discount_code_box.get())
+    my_cursor.execute(sql_command, values)
+
+    # Commit the changes to database
+    mydb.commit()
+
+    # clear the fields
+    clear_fields()
+
 
 # Create a lable
 title_label = Label(win, text="MyOrganization Database", font=("Helvetica", 16))
@@ -54,10 +63,9 @@ zip_code_label = Label(win, text="Zipcode").grid(row=7, column=0, sticky=W, padx
 country_label = Label(win, text="Country").grid(row=8, column=0, sticky=W, padx=10)
 phone_label = Label(win, text="Phone Number").grid(row=9, column=0, sticky=W, padx=10)
 email_label = Label(win, text="Email Address").grid(row=10, column=0, sticky=W, padx=10)
-username_label = Label(win, text="UserName").grid(row=11, column=0, sticky=W, padx=10)
-payment_method_label = Label(win, text="Payment Method").grid(row=12, column=0, sticky=W, padx=10)
-discount_code_label = Label(win, text="Discount Code").grid(row=13, column=0, sticky=W, padx=10)
-price_paid_label = Label(win, text="Price Paid").grid(row=14, column=0, sticky=W, padx=10)
+payment_method_label = Label(win, text="Payment Method").grid(row=11, column=0, sticky=W, padx=10)
+discount_code_label = Label(win, text="Discount Code").grid(row=12, column=0, sticky=W, padx=10)
+price_paid_label = Label(win, text="Price Paid").grid(row=13, column=0, sticky=W, padx=10)
 
 # Create Entry BOxes
 first_name_box = Entry(win)
@@ -80,14 +88,12 @@ phone_box = Entry(win)
 phone_box.grid(row=9, column=1, pady=10)
 email_box = Entry(win)
 email_box.grid(row=10, column=1, pady=10)
-username_box = Entry(win)
-username_box.grid(row=11, column=1, pady=10)
 payment_method_box = Entry(win)
-payment_method_box.grid(row=12, column=1, pady=10)
+payment_method_box.grid(row=11, column=1, pady=10)
 discount_code_box = Entry(win)
-discount_code_box.grid(row=13, column=1, pady=10)
+discount_code_box.grid(row=12, column=1, pady=10)
 price_paid_box = Entry(win)
-price_paid_box.grid(row=14, column=1, pady=10)
+price_paid_box.grid(row=13, column=1, pady=10)
 
 # Create Buttons
 add_submit_button = Button(win, text="SUBMIT", command=add_customers)
