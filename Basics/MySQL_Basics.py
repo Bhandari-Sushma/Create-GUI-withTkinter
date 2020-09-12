@@ -58,17 +58,18 @@ my_cursor.execute("""ALTER TABLE customers ADD(
 
 # Show table content
 my_cursor.execute("SELECT * from customers")
-for items in my_cursor.description:
+results = my_cursor.fetchall()
+for items in results:
     print(items)
 
-
+'''
 # Function to add customers to the database
 def add_customers():
     sql_command = ""
     values = ""
     my_cursor.execute(sql_command, values)
 
-
+'''
 
 
 win.mainloop()
