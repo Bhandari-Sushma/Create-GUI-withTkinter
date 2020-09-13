@@ -57,6 +57,39 @@ def write_to_csv(results):
             w.writerow(records)
 
 
+def search_customer():
+    search_customers = Tk()
+    search_customers.title('Search Customers')
+    search_customers.geometry("800x600")
+
+    def search_now():
+        searched = search_box.get()
+        sql = "SELECT * FROM customers WHERE last_name = %s"
+        name = (searched, )
+        result = my_cursor.execute(sql, name)
+        result = my_cursor.fetchall()
+
+        if not result:
+            result = "Record not found ....."
+
+        searched_label = Label(search_customers, text=result)
+        searched_label.grid(row=2, column=0, columnspan=2, padx=10)
+
+
+    # Entry box to search for customers
+    search_box = Entry(search_customers)
+    search_box.grid(row=0, column=1, padx=10, pady=10)
+
+    search_box_label = Label(search_customers, text="Search By Last Name:")
+    search_box_label.grid(row=0, column=0, padx=10, pady=10)
+
+    # Entry box search Button
+    search_button = Button(search_customers, text="Search Customers", command=search_now)
+    search_button.grid(row=1, column=0, padx=10, pady=10)
+
+
+
+
 # Function to list customers
 def list_customers():
     customers_list_query = Tk()
@@ -135,7 +168,9 @@ clear_fields_button.grid(row=14, column=1, padx=10, pady=10, ipadx=30)
 customers_list_button = Button(win, text="List Customers", command=list_customers)
 customers_list_button.grid(row=15, column=0, sticky=W, padx=10)
 
-
+    # Search customers
+search_customers_buttons = Button(win, text="Search Customers", command=search_customer)
+search_customers_buttons.grid(row=15, column=1, sticky=W, padx=10)
 
 
 win.mainloop()
