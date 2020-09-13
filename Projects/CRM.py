@@ -1,15 +1,16 @@
 from tkinter import *
 import mysql.connector
+import csv
 
 win = Tk()
 win.title('CRM Database')
-win.geometry("600x800")
+win.geometry("500x700")
 
 # Connect to MySQL
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="",
+    passwd="Himalaya@1b",
     database="myorganization"
 )
 
@@ -46,6 +47,35 @@ def add_customers():
 
     # clear the fields
     clear_fields()
+
+
+# Write to CSV function
+def write_to_csv(results):
+    with open('customers.csv', 'w', newline='') as f:
+        w = csv.writer(f, dialect='excel')
+        for records in results:
+            w.writerow(records)
+
+
+# Function to list customers
+def list_customers():
+    customers_list_query = Tk()
+    customers_list_query.title('Customers List')
+    customers_list_query.geometry("800x600")
+
+    # Query the database
+    my_cursor.execute("SELECT * FROM customers")
+    results = my_cursor.fetchall()
+
+    for index, x in enumerate(results):
+        num = 0
+        for y in x:
+            loopup_label = Label(customers_list_query, text=y)
+            loopup_label.grid(row=index, column=num)
+            num += 1
+
+    csv_button = Button(customers_list_query, text="Save to Excel", command=lambda: write_to_csv(results))
+    csv_button.grid(row=len(results)+1, column=0)
 
 
 # Create a lable
@@ -97,9 +127,15 @@ price_paid_box.grid(row=13, column=1, pady=10)
 
 # Create Buttons
 add_submit_button = Button(win, text="SUBMIT", command=add_customers)
-add_submit_button.grid(row=15, column=0, padx=10, pady=10, ipadx=30)
+add_submit_button.grid(row=14, column=0, padx=10, pady=10, ipadx=30)
 
 clear_fields_button = Button(win, text="Clear Fields", command=clear_fields)
-clear_fields_button.grid(row=15, column=1, padx=10, pady=10, ipadx=30)
+clear_fields_button.grid(row=14, column=1, padx=10, pady=10, ipadx=30)
+
+customers_list_button = Button(win, text="List Customers", command=list_customers)
+customers_list_button.grid(row=15, column=0, sticky=W, padx=10)
+
+
+
 
 win.mainloop()
