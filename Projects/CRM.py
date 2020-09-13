@@ -1,6 +1,7 @@
 from tkinter import *
 import mysql.connector
 import csv
+from tkinter import ttk
 
 win = Tk()
 win.title('CRM Database')
@@ -63,8 +64,19 @@ def search_customer():
     search_customers.geometry("800x600")
 
     def search_now():
+        search_by = drop.get()
+        sql = ""
+        if search_by == "Search By...":
+            searched_label = Label(search_customers, text="You Forgot to select the drop-down options.")
+            searched_label.grid(row=2, column=0, columnspan=2, padx=10)
+        if search_by == "Last Name":
+            sql = "SELECT * FROM customers WHERE last_name = %s"
+        if search_by == "Email Address":
+            sql = "SELECT * FROM customers WHERE email = %s"
+        if search_by == "Customer Id":
+            sql = "SELECT * FROM customers WHERE user_id = %s"
+
         searched = search_box.get()
-        sql = "SELECT * FROM customers WHERE last_name = %s"
         name = (searched, )
         result = my_cursor.execute(sql, name)
         result = my_cursor.fetchall()
@@ -73,21 +85,24 @@ def search_customer():
             result = "Record not found ....."
 
         searched_label = Label(search_customers, text=result)
-        searched_label.grid(row=2, column=0, columnspan=2, padx=10)
+        searched_label.grid(row=3, column=0, columnspan=2, padx=10)
 
 
     # Entry box to search for customers
     search_box = Entry(search_customers)
     search_box.grid(row=0, column=1, padx=10, pady=10)
 
-    search_box_label = Label(search_customers, text="Search By Last Name:")
-    search_box_label.grid(row=0, column=0, padx=10, pady=10)
+    #search_box_label = Label(search_customers, text="Search ")
+    #search_box_label.grid(row=0, column=0, padx=10, pady=10)
 
     # Entry box search Button
     search_button = Button(search_customers, text="Search Customers", command=search_now)
     search_button.grid(row=1, column=0, padx=10, pady=10)
 
-
+    # Drop down box
+    drop = ttk.Combobox(search_customers, values=["Search By...", "Last Name", "Email Address", "Customer Id"])
+    drop.current(0)  # drop down default
+    drop.grid(row=0, column=0, padx=10, pady=10)
 
 
 # Function to list customers
@@ -168,7 +183,7 @@ clear_fields_button.grid(row=14, column=1, padx=10, pady=10, ipadx=30)
 customers_list_button = Button(win, text="List Customers", command=list_customers)
 customers_list_button.grid(row=15, column=0, sticky=W, padx=10)
 
-    # Search customers
+# Search customers
 search_customers_buttons = Button(win, text="Search Customers", command=search_customer)
 search_customers_buttons.grid(row=15, column=1, sticky=W, padx=10)
 
