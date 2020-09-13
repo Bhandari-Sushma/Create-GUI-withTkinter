@@ -10,7 +10,7 @@ win.geometry("500x700")
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="Himalaya@1b",
+    passwd="",
     database="myorganization"
 )
 
